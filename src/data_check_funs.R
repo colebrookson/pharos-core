@@ -152,3 +152,77 @@ check_float <- function(value) {
     }
     return(value)
 }
+
+#' Check Data Function
+#'
+#' This function checks the validity of data in a dataframe that supposedly
+#' match the pharos standard.
+#'
+#' @param df The dataframe to be checked.
+#'
+#' @return A dataframe containing the problem rows, columns, and errors.
+#'
+#' @examples
+#' df <- data.frame(
+#'     host_species = c("Cat", "Dog", "Rabbit"),
+#'     ncbi_id = c(12345, 67890, 54321),
+#'     detection_outcome = c("Positive", "Negative", "Positive"),
+#'     organism_sex = c("Male", "Female", "Unknown"),
+#'     dead_or_alive = c("Alive", "Dead", "Alive"),
+#'     latitude = c(40.7128, 37.7749, 34.0522),
+#'     longitude = c(-74.0060, -122.4194, -118.2437),
+#'     year = c(2021, 2022, 2023),
+#'     collection_day = c(1, 2, 3),
+#'     collection_month = c("January", "February", "March"),
+#'     value = c(1.23, 4.56, 7.89)
+#' )
+#' check_data(df)
+#'
+#' @export
+check_data <- function(df) {
+    # Initialize an empty dataframe to store problem rows, columns, and errors
+    problem_data <- data.frame(
+        row = integer(),
+        column = character(),
+        error = character(),
+        stringsAsFactors = FALSE
+    )
+
+    # Iterate over each row in the dataframe
+    for (i in 1:nrow(df)) {
+        row <- df[i, ]
+
+        # Apply the check functions to each column in the row
+        tryCatch(
+            {
+                check_host_species(row$host_species)
+                check_ncbi(row$ncbi_id)
+                check_detection_outcome(row$detection_outcome)
+                check_organism_sex(row$organism_sex)
+                check_dead_or_alive(row$dead_or_alive)
+                check_lat(row$latitude)
+                check_lon(row$longitude)
+                check_date(row$year, list(
+                    collection_day = row$collection_day,
+                    collection_month = row$collection_month
+                ))
+                check_float(row$value)
+            },
+            error = function(e) {
+                # If an error occurs, add the row, column, and error
+                # to the problem_data dataframe
+                problem_data <- rbind(
+                    problem_data,
+                    data.frame(
+                        row = i,
+                        column = names(row)[which(!sapply(row, is.null))],
+                        error = e$message, stringsAsFactors = FALSE
+                    )
+                )
+            }
+        )
+    }
+
+    # Return the problem_data dataframe
+    return(problem_data)
+}
