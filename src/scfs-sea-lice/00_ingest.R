@@ -2,19 +2,21 @@
 #' DATE OF CREATION: 2024-03-29
 
 # pull the fish data
-pull_data(
+fish_data <- pull_data(
     data_loc = paste0(
-        "https://github.com/sjpeacock/Sea-lice-database/blob/master/",
+        "https://raw.githubusercontent.com/sjpeacock/Sea-lice-database/master/",
         "Data/BroughtonSeaLice_fishData.csv"
     ),
-    out_loc = here::here("./data/scfs-sea-lice/fish-data.csv")
+    out_loc = here::here("./data/scfs-sea-lice/fish-data.csv"),
+    env_load = TRUE
 )
 
 # pull the site data
-pull_data(
+site_data <- pull_data(
     data_loc = paste0(
-        "https://github.com/sjpeacock/Sea-lice-database/blob/master/",
+        "https://raw.githubusercontent.com/sjpeacock/Sea-lice-database/master/",
         "Data/BroughtonSeaLice_siteData.csv"
     ),
-    out_loc = here::here("./data/scfs-sea-lice/site-data.csv")
+    out_loc = here::here("./data/scfs-sea-lice/site-data.csv"),
+    env_load = TRUE
 )
