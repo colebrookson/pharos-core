@@ -1,10 +1,10 @@
 scfs_names
 fish_id
 site_id
-year.x
-day.x
-month.x
-location.x
+year
+day
+month
+location
 fish_num
 species
 length
@@ -35,10 +35,6 @@ blue_blotches
 pinched_belly
 scales
 comments
-year.y
-month.y
-day.y
-location.y
 salt
 temp
 salmon_captured

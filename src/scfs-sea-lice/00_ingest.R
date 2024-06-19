@@ -30,7 +30,7 @@ scfs_data <- dplyr::left_join(
     by = "site_id",
     suffix = c("", ".annoying_duplicate_column")
 ) %>%
-    select(-ends_with(".annoying_duplicate_column"))
+    dplyr::select(-dplyr::ends_with(".annoying_duplicate_column"))
 readr::write_csv(
     data.frame(
         scfs_names = names(scfs_data)
